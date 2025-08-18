@@ -28,7 +28,7 @@
     <div class="container d-flex justify-content-between align-items-center">
         {{-- Brand: Logo +  --}}
         <a class="navbar-brand text-white fw-bold fs-3 d-flex align-items-center" href="{{ route('dashboard') }}">
-            <img src="{{ asset('assets/img/edu1.png') }}" alt="Logo EduKes" style="height: 53px; width: auto; margin-right: 10px;">
+            <img src="{{ asset('public/assets/img/edu1.png') }}" alt="Logo EduKes" style="height: 53px; width: auto; margin-right: 10px;">
             SmartHealth
         </a>
 
