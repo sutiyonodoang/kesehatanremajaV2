@@ -1,0 +1,8 @@
+V2.0.18082339
+
+- penambahan fitur konsultasi
+- penambahan fitur progres belajar
+- penambahan fitur laporan pada admin
+- penambahan fitur aktifitas log pengguna
+
+
