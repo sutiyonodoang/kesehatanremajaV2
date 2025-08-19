@@ -93,9 +93,32 @@ class ReportController extends Controller
         })->toArray();
         $consultationCategoryCounts = $consultationCategories->pluck('total')->toArray();
 
+        // Statistik Pengguna Konsultasi
+        $totalUsers = User::where('role', 'user')->count();
+        $usersWithConsultations = Consultation::distinct('user_id')->count('user_id');
+        $percentageUsersWithConsultations = $totalUsers > 0 ? ($usersWithConsultations / $totalUsers) * 100 : 0;
+
+        // Statistik Zoom Rooms
+        $totalZoomRooms = \App\Models\ZoomRoom::count();
+        $upcomingZoomRooms = \App\Models\ZoomRoom::where('jadwal', '>=', now())->count();
+        $pastZoomRooms = \App\Models\ZoomRoom::where('jadwal', '<', now())->count();
+
+        // Statistik Partisipasi Zoom (berdasarkan UserProgress)
+        $usersCompletedZoom = \App\Models\UserProgress::where('content_type', 'zoom_room')
+                                                    ->where('is_completed', true)
+                                                    ->distinct('user_id')
+                                                    ->count('user_id');
+        $totalZoomCompletions = \App\Models\UserProgress::where('content_type', 'zoom_room')
+                                                        ->where('is_completed', true)
+                                                        ->count();
+
+
         return view('admin.reports.index', compact('pieChartData', 'barChartData',
             'consultationStatusLabels', 'consultationStatusCounts',
             'consultationTrendLabels', 'consultationTrendCounts',
-            'consultationCategoryLabels', 'consultationCategoryCounts'));
+            'consultationCategoryLabels', 'consultationCategoryCounts',
+            'totalUsers', 'usersWithConsultations', 'percentageUsersWithConsultations',
+            'totalZoomRooms', 'upcomingZoomRooms', 'pastZoomRooms',
+            'usersCompletedZoom', 'totalZoomCompletions'));
     }
 }

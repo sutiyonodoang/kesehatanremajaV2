@@ -18,6 +18,9 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="consultation-stats-tab" data-bs-toggle="tab" data-bs-target="#consultation-stats" type="button" role="tab" aria-controls="consultation-stats" aria-selected="false">Statistik Konsultasi</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="zoom-participation-tab" data-bs-toggle="tab" data-bs-target="#zoom-participation" type="button" role="tab" aria-controls="zoom-participation" aria-selected="false">Partisipasi Zoom</button>
+            </li>
         </ul>
 
         <!-- Tab Content -->
@@ -26,16 +29,16 @@
             <div class="tab-pane fade show active" id="user-progress" role="tabpanel" aria-labelledby="user-progress-tab">
                 <h5 class="mt-4 mb-3">Laporan Progres Pengguna</h5>
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card shadow mb-4 h-100">
+                    <div class="col-lg-4 d-flex align-items-stretch p-2">
+                        <div class="card shadow h-100">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Ringkasan Progres</h6>
                                 <a href="#" role="button" id="refreshUserProgressButton" class="text-gray-400">
                                     <i class="fas fa-sync-alt fa-sm fa-fw"></i>
                                 </a>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-pie pt-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="chart-pie pt-4 my-auto">
                                     <canvas id="progressPieChart"></canvas>
                                 </div>
                                 <div class="mt-4 text-center small">
@@ -49,8 +52,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8">
-                        <div class="card shadow mb-4" id="detailChartCard" style="min-height: 70%; display: none;">
+                    <div class="col-lg-8 d-flex align-items-stretch p-2">
+                        <div class="card shadow h-100" id="detailChartCard" style="min-height: 70%; display: none;">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary" id="detailChartTitle"></h6>
                                 <div class="dropdown no-arrow">
@@ -67,8 +70,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-bar">
+                            <div class="card-body d-flex flex-column">
+                                <div class="chart-bar my-auto">
                                     <canvas id="userDetailBarChart"></canvas>
                                 </div>
                             </div>
@@ -81,13 +84,30 @@
             <div class="tab-pane fade" id="consultation-stats" role="tabpanel" aria-labelledby="consultation-stats-tab">
                 <h5 class="mt-4 mb-3">Laporan Statistik Konsultasi</h5>
                 <div class="row">
-                    <div class="col-lg-4">
-                        <div class="card shadow mb-4">
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Pengguna yang Berkonsultasi</h6>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h4 class="small font-weight-bold">Pengguna Aktif Konsultasi <span class="float-right">{{ number_format($percentageUsersWithConsultations, 2) }}%</span></h4>
+                                <div class="progress mb-4">
+                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{ $percentageUsersWithConsultations }}%" aria-valuenow="{{ $percentageUsersWithConsultations }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                </div>
+                                <div class="d-flex justify-content-between mt-auto">
+                                    <span>Total Pengguna: <strong>{{ $totalUsers }}</strong></span>
+                                    <span>Pengguna Berkonsultasi: <strong>{{ $usersWithConsultations }}</strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Konsultasi Berdasarkan Status</h6>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-pie pt-4">
+                            <div class="card-body d-flex flex-column">
+                                <div class="chart-pie pt-4 my-auto">
                                     <canvas id="consultationStatusPieChart"></canvas>
                                 </div>
                                 <div class="mt-4 text-center small" id="consultationStatusLegend">
@@ -96,27 +116,84 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="card shadow mb-4">
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Tren Konsultasi (6 Bulan Terakhir)</h6>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-area">
+                            <div class="card-body d-flex flex-column">
+                                <div class="chart-area my-auto">
                                     <canvas id="consultationTrendLineChart"></canvas>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="card shadow mb-4">
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Konsultasi Berdasarkan Kategori Teratas</h6>
                             </div>
-                            <div class="card-body">
-                                <div class="chart-bar">
+                            <div class="card-body d-flex flex-column">
+                                <div class="chart-bar my-auto">
                                     <canvas id="consultationCategoryBarChart"></canvas>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Zoom Participation Tab Pane -->
+            <div class="tab-pane fade" id="zoom-participation" role="tabpanel" aria-labelledby="zoom-participation-tab">
+                <h5 class="mt-4 mb-3">Laporan Partisipasi Zoom</h5>
+                <div class="row">
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Total Ruangan Zoom</h6>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <h1 class="display-4 text-primary">{{ $totalZoomRooms }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Ruangan Zoom Mendatang</h6>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <h1 class="display-4 text-success">{{ $upcomingZoomRooms }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Ruangan Zoom Lalu</h6>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <h1 class="display-4 text-info">{{ $pastZoomRooms }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Pengguna Menyelesaikan Zoom</h6>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <h1 class="display-4 text-warning">{{ $usersCompletedZoom }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 p-2">
+                        <div class="card shadow h-100">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Total Penyelesaian Zoom</h6>
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <h1 class="display-4 text-danger">{{ $totalZoomCompletions }}</h1>
                             </div>
                         </div>
                     </div>
@@ -130,6 +207,7 @@
 
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     // Data from controller
@@ -141,6 +219,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const consultationTrendCounts = @json($consultationTrendCounts);
     const consultationCategoryLabels = @json($consultationCategoryLabels);
     const consultationCategoryCounts = @json($consultationCategoryCounts);
+    const totalUsers = @json($totalUsers);
+    const usersWithConsultations = @json($usersWithConsultations);
+    const percentageUsersWithConsultations = @json($percentageUsersWithConsultations);
 
     let userDetailBarChart = null; // a variable to hold the bar chart instance
     let currentStatusFilter = null; // To store the currently selected status (completed/in-progress)
@@ -469,6 +550,9 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     });
+
+    
+
 });
 </script>
 @endpush
