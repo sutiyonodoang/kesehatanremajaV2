@@ -57,6 +57,15 @@ class User extends Authenticatable
         ];
     }
 
+    protected static function booted()
+    {
+        static::deleting(function ($user) {
+            $user->progress()->delete();
+            $user->consultations()->delete();
+            $user->consultationResponses()->delete();
+        });
+    }
+
     public function consultations(): HasMany
     {
         return $this->hasMany(Consultation::class);

@@ -9,6 +9,7 @@ use App\Models\Materi;
 use App\Models\Consultation;
 use App\Models\ConsultationCategory;
 use Illuminate\Support\Facades\DB;
+use App\Models\Komentar;
 
 class ReportController extends Controller
 {
@@ -112,6 +113,23 @@ class ReportController extends Controller
                                                         ->where('is_completed', true)
                                                         ->count();
 
+        // Komentar Report Data
+        $totalComments = Komentar::count();
+        $commentsPerMateri = Komentar::select('materi_id', DB::raw('count(*) as total_comments'))
+                                    ->with('materi')
+                                    ->groupBy('materi_id')
+                                    ->orderByDesc('total_comments')
+                                    ->get();
+        $commentsPerUser = Komentar::select('user_id', DB::raw('count(*) as total_comments'))
+                                    ->with('user')
+                                    ->groupBy('user_id')
+                                    ->orderByDesc('total_comments')
+                                    ->limit(10)
+                                    ->get();
+        $recentComments = Komentar::with(['user', 'materi'])
+                                    ->orderByDesc('created_at')
+                                    ->limit(10)
+                                    ->get();
 
         return view('admin.reports.index', compact('pieChartData', 'barChartData',
             'consultationStatusLabels', 'consultationStatusCounts',
@@ -119,6 +137,8 @@ class ReportController extends Controller
             'consultationCategoryLabels', 'consultationCategoryCounts',
             'totalUsers', 'usersWithConsultations', 'percentageUsersWithConsultations',
             'totalZoomRooms', 'upcomingZoomRooms', 'pastZoomRooms',
-            'usersCompletedZoom', 'totalZoomCompletions'));
+            'usersCompletedZoom', 'totalZoomCompletions',
+            'totalComments', 'commentsPerMateri', 'commentsPerUser', 'recentComments'
+        ));
     }
 }
