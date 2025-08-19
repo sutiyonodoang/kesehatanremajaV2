@@ -29,7 +29,7 @@
             <div class="tab-pane fade show active" id="user-progress" role="tabpanel" aria-labelledby="user-progress-tab">
                 <h5 class="mt-4 mb-3">Laporan Progres Pengguna</h5>
                 <div class="row">
-                    <div class="col-lg-4 d-flex align-items-stretch p-2">
+                    <div class="col-lg-3 d-flex align-items-stretch p-2">
                         <div class="card shadow h-100">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary">Ringkasan Progres</h6>
@@ -52,8 +52,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-8 d-flex align-items-stretch p-2">
-                        <div class="card shadow h-100" id="detailChartCard" style="min-height: 70%; display: none;">
+                    <div class="col-lg-8 p-2">
+                        <div class="card shadow" id="detailChartCard" style="display: none;">
                             <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                 <h6 class="m-0 font-weight-bold text-primary" id="detailChartTitle"></h6>
                                 <div class="dropdown no-arrow">
