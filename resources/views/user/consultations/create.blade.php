@@ -17,7 +17,7 @@
             <strong>Panduan:</strong> Buat konsultasi kesehatan Anda dan tim admin akan merespon secepat mungkin.
         </div>
 
-        <form action="{{ route('user.consultations.store') }}" method="POST" enctype="multipart/form-data">
+        <form id="consultationForm" action="{{ route('user.consultations.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             
             <div class="row">
