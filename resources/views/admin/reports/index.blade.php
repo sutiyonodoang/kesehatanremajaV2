@@ -21,6 +21,9 @@
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="zoom-participation-tab" data-bs-toggle="tab" data-bs-target="#zoom-participation" type="button" role="tab" aria-controls="zoom-participation" aria-selected="false">Partisipasi Zoom</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="comments-report-tab" data-bs-toggle="tab" data-bs-target="#comments-report" type="button" role="tab" aria-controls="comments-report" aria-selected="false">Komentar</button>
+            </li>
         </ul>
 
         <!-- Tab Content -->
@@ -198,6 +201,139 @@
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <!-- Comments Report Tab Pane -->
+            <div class="tab-pane fade" id="comments-report" role="tabpanel" aria-labelledby="comments-report-tab">
+                <h5 class="mt-4 mb-3">Laporan Komentar</h5>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6">
+                        <div class="card shadow h-100"> <!-- Changed panel to card for consistency -->
+                            <div class="card-header py-3"> <!-- Changed panel-heading to card-header -->
+                                <h6 class="m-0 font-weight-bold text-primary">Total Komentar</h6> <!-- Changed to h6 for consistency -->
+                            </div>
+                            <div class="card-body d-flex align-items-center justify-content-center">
+                                <h1 class="display-4 text-primary">{{ $totalComments }}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-6 p-2">
+                        <div class="card shadow h-100"> <!-- Changed panel to card for consistency -->
+                            <div class="card-header py-3"> <!-- Changed panel-heading to card-header -->
+                                <h6 class="m-0 font-weight-bold text-primary">Komentar per Materi (Top 10)</h6> <!-- Changed to h6 for consistency -->
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="card-body"> <!-- Changed panel-body to card-body -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Materi</th>
+                                                <th>Jumlah Komentar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($commentsPerMateri as $index => $data)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $data->materi->judul ?? 'Materi Tidak Ditemukan' }}</td>
+                                                <td>{{ $data->total_comments }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+
+                    <div class="col-lg-6 p-2" >
+                        <div class="card shadow h-100"> <!-- Changed panel to card for consistency -->
+                            <div class="card-header py-3"> <!-- Changed panel-heading to card-header -->
+                                <h6 class="m-0 font-weight-bold text-primary">Komentar per Pengguna (Top 10)</h6> <!-- Changed to h6 for consistency -->
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="card-body"> <!-- Changed panel-body to card-body -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Pengguna</th>
+                                                <th>Jumlah Komentar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($commentsPerUser as $index => $data)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $data->user->name ?? 'Pengguna Tidak Ditemukan' }}</td>
+                                                <td>{{ $data->total_comments }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-6 -->
+                </div>
+                <!-- /.row -->
+
+                <div class="row">
+                    <div class="col-lg-12 p-2">
+                        <div class="card shadow h-100"> <!-- Changed panel to card for consistency -->
+                            <div class="card-header py-3"> <!-- Changed panel-heading to card-header -->
+                                <h6 class="m-0 font-weight-bold text-primary">10 Komentar Terbaru</h6> <!-- Changed to h6 for consistency -->
+                            </div>
+                            <!-- /.panel-heading -->
+                            <div class="card-body"> <!-- Changed panel-body to card-body -->
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Pengguna</th>
+                                                <th>Materi</th>
+                                                <th>Komentar</th>
+                                                <th>Tanggal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach($recentComments as $index => $comment)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $comment->user->name ?? 'Pengguna Tidak Ditemukan' }}</td>
+                                                <td>{{ $comment->materi->judul ?? 'Materi Tidak Ditemukan' }}</td>
+                                                <td>{{ $comment->isi_komentar }}</td>
+                                                <td>{{ $comment->created_at->format('d M Y H:i') }}</td>
+                                            </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <!-- /.table-responsive -->
+                            </div>
+                            <!-- /.panel-body -->
+                        </div>
+                        <!-- /.panel -->
+                    </div>
+                    <!-- /.col-lg-12 -->
+                </div>
+                <!-- /.row -->
             </div>
         </div>
 

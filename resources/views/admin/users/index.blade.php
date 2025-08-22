@@ -3,20 +3,13 @@
 
 @section('content')
 <div class="container-fluid">
-    <div class="row mb-4">
-        <div class="col-12">
-            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Kembali
-            </a>
-        </div>
-    </div>
-
     <div class="card shadow rounded-4">
         <div class="card-header bg-primary text-white fw-bold fs-5 rounded-top-4">
             Manajemen Pengguna
         </div>
         <div class="card-body">
             <a href="{{ route('admin.users.create') }}" class="btn btn-primary mb-3">+ Tambah User</a>
+            <a href="{{ route('admin.dashboard') }}" class="btn btn-secondary mb-3">Kembali</a>
 
             @if(session('success'))
                 <div class="alert alert-success">
