@@ -64,7 +64,6 @@
     </div>
 </div>
 
-<!-- Consultation Management Section -->
 <div class="row">
     <div class="col-md-3 mb-4">
         <div class="card text-white shadow rounded-4 border-0" style="background-color: #6A0DAD;">
@@ -83,28 +82,40 @@
         </div>
     </div>
 
-    <div class="col-md-3 mb-4">
+    <!-- <div class="col-md-3 mb-4">
         <div class="card text-white shadow rounded-4 border-0" style="background-color: #4682B4;">
             <div class="card-body">
                 <div class="text-center">
                     <div class="feature-icon text-center fs-2">📊</div>
-                    <h5 class="card-title fw-bold text-center">Laporan</h5>
+                    <h5 class="card-title fw-bold text-center">Laporan Komprehensif</h5>
                     <a href="{{ route('admin.reports.index') }}" class="btn btn-light btn-sm">Lihat</a>
+                </div>
+            </div>
+        </div>
+    </div> -->
+
+    <div class="col-md-3 mb-4">
+        <div class="card text-white shadow rounded-4 border-0" style="background-color: #17a2b8;">
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="feature-icon text-center fs-2">🗨️</div>
+                    <h5 class="card-title fw-bold text-center">Forum Diskusi</h5>
+                    <a href="{{ route('forum.index') }}" class="btn btn-light btn-sm">Kelola</a>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- <div class="col-md-3 mb-4">
-        <div class="card text-white shadow rounded-4 border-0" style="background-color: #9370DB;">
+    <div class="col-md-3 mb-4">
+        <div class="card text-white shadow rounded-4 border-0" style="background-color: #153147ff;">
             <div class="card-body">
                 <div class="text-center">
-                    <div class="feature-icon text-center fs-2">🏷️</div>
-                    <h5 class="card-title fw-bold text-center">Kategori Konsultasi</h5>
-                    <a href="{{ route('admin.consultation-categories.index') }}" class="btn btn-light btn-sm">Kelola</a>
+                    <div class="feature-icon text-center fs-2">📈</div>
+                    <h5 class="card-title fw-bold text-center">Laporan Komprehensif</h5>
+                    <a href="{{ route('admin.reports.index') }}" class="btn btn-light btn-sm">Lihat</a>
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
 </div>
 @endsection

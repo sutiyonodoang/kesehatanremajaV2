@@ -5,46 +5,89 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\UserProgress;
 use App\Models\Materi;
 use App\Models\Consultation;
 use App\Models\ConsultationCategory;
+use App\Models\Forum;
+use App\Models\ForumThread;
+use App\Models\ForumPost;
 use Illuminate\Support\Facades\DB;
 use App\Models\Komentar;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
     public function index()
     {
-        // Ambil semua materi untuk mengetahui total materi
-        $totalMaterials = Materi::count();
+        // Ambil total content untuk setiap jenis
+        $totalInformasiKesehatan = \App\Models\InformasiKesehatan::count();
+        $totalMateriPdf = Materi::where('jenis', 'pdf')->count();
+        $totalMateriVideo = Materi::where('jenis', 'video')->count();
+        $totalZoomRooms = \App\Models\ZoomRoom::count();
 
-        // Ambil semua user (non-admin dan non-konsultan) beserta progresnya
-        $users = User::where('role', 'user')->with('progress')->get();
+        // Ambil semua user (non-admin dan non-konsultan)
+        $users = User::where('role', 'user')->get();
 
         $completedUsersCount = 0;
         $inProgressUsersCount = 0;
 
         $barChartData = [];
 
-        if ($totalMaterials > 0) {
-            foreach ($users as $user) {
-                $progressCount = $user->progress->count();
-                $progressPercentage = ($progressCount / $totalMaterials) * 100;
+        foreach ($users as $user) {
+            // Hitung progress untuk setiap jenis content (sama seperti di dashboard user)
+            $completedInformasiKesehatan = UserProgress::where('user_id', $user->id)
+                                                      ->where('content_type', 'informasi_kesehatan')
+                                                      ->where('is_completed', true)
+                                                      ->distinct('content_id')
+                                                      ->count('content_id');
+            $completedMateriPdf = UserProgress::where('user_id', $user->id)
+                                             ->where('content_type', 'materi_pdf')
+                                             ->where('is_completed', true)
+                                             ->distinct('content_id')
+                                             ->count('content_id');
+            $completedMateriVideo = UserProgress::where('user_id', $user->id)
+                                               ->where('content_type', 'materi_video')
+                                               ->where('is_completed', true)
+                                               ->distinct('content_id')
+                                               ->count('content_id');
+            $completedZoomRooms = UserProgress::where('user_id', $user->id)
+                                             ->where('content_type', 'zoom_room')
+                                             ->where('is_completed', true)
+                                             ->distinct('content_id')
+                                             ->count('content_id');
 
-                $isCompleted = $progressCount >= $totalMaterials;
+            // Hitung persentase untuk setiap jenis content
+            $percentInformasiKesehatan = $totalInformasiKesehatan > 0 ? ($completedInformasiKesehatan / $totalInformasiKesehatan) * 100 : 0;
+            $percentMateriPdf = $totalMateriPdf > 0 ? ($completedMateriPdf / $totalMateriPdf) * 100 : 0;
+            $percentMateriVideo = $totalMateriVideo > 0 ? ($completedMateriVideo / $totalMateriVideo) * 100 : 0;
+            $percentZoomRooms = $totalZoomRooms > 0 ? ($completedZoomRooms / $totalZoomRooms) * 100 : 0;
 
-                if ($isCompleted) {
-                    $completedUsersCount++;
-                } else {
-                    $inProgressUsersCount++;
-                }
+            // Hitung rata-rata keseluruhan (sama seperti di dashboard user)
+            $totalContentTypes = 0;
+            $sumPercentages = 0;
 
-                $barChartData[] = [
-                    'name' => $user->name,
-                    'progress' => round($progressPercentage),
-                    'status' => $isCompleted ? 'completed' : 'in-progress'
-                ];
+            if ($totalInformasiKesehatan > 0) { $totalContentTypes++; $sumPercentages += $percentInformasiKesehatan; }
+            if ($totalMateriPdf > 0) { $totalContentTypes++; $sumPercentages += $percentMateriPdf; }
+            if ($totalMateriVideo > 0) { $totalContentTypes++; $sumPercentages += $percentMateriVideo; }
+            if ($totalZoomRooms > 0) { $totalContentTypes++; $sumPercentages += $percentZoomRooms; }
+
+            $overallProgress = $totalContentTypes > 0 ? round($sumPercentages / $totalContentTypes, 2) : 0;
+
+            // Tentukan status berdasarkan progress keseluruhan
+            $isCompleted = $overallProgress >= 100;
+
+            if ($isCompleted) {
+                $completedUsersCount++;
+            } else {
+                $inProgressUsersCount++;
             }
+
+            $barChartData[] = [
+                'name' => $user->name,
+                'progress' => $overallProgress,
+                'status' => $isCompleted ? 'completed' : 'in-progress'
+            ];
         }
 
         $pieChartData = [
@@ -131,6 +174,9 @@ class ReportController extends Controller
                                     ->limit(10)
                                     ->get();
 
+        // Forum Statistics
+        $forumStats = $this->getForumStatistics();
+
         return view('admin.reports.index', compact('pieChartData', 'barChartData',
             'consultationStatusLabels', 'consultationStatusCounts',
             'consultationTrendLabels', 'consultationTrendCounts',
@@ -138,7 +184,179 @@ class ReportController extends Controller
             'totalUsers', 'usersWithConsultations', 'percentageUsersWithConsultations',
             'totalZoomRooms', 'upcomingZoomRooms', 'pastZoomRooms',
             'usersCompletedZoom', 'totalZoomCompletions',
-            'totalComments', 'commentsPerMateri', 'commentsPerUser', 'recentComments'
+            'totalComments', 'commentsPerMateri', 'commentsPerUser', 'recentComments',
+            'forumStats'
         ));
+    }
+
+    /**
+     * Get comprehensive forum statistics
+     */
+    private function getForumStatistics()
+    {
+        try {
+            // Basic statistics
+            $totalForums = Forum::count();
+            $totalThreads = ForumThread::count();
+            $totalPosts = ForumPost::count();
+            $totalActiveUsers = User::whereHas('forumThreads')->orWhereHas('forumPosts')->count();
+            
+            // User engagement data
+            $topUsers = User::select('users.*')
+                ->withCount(['forumThreads', 'forumPosts'])
+                ->having('forum_threads_count', '>', 0)
+                ->orHaving('forum_posts_count', '>', 0)
+                ->orderByRaw('(forum_threads_count + forum_posts_count) DESC')
+                ->limit(10)
+                ->get()
+                ->map(function($user) {
+                    $user->total_activity = $user->forum_threads_count + $user->forum_posts_count;
+                    
+                    // Calculate engagement score
+                    $monthlyThreads = ForumThread::where('user_id', $user->id)
+                        ->where('created_at', '>=', Carbon::now()->startOfMonth())
+                        ->count();
+                    $monthlyPosts = ForumPost::where('user_id', $user->id)
+                        ->where('created_at', '>=', Carbon::now()->startOfMonth())
+                        ->count();
+                    
+                    $user->engagement_score = min(100, 
+                        ($user->forum_threads_count * 3) + 
+                        ($user->forum_posts_count * 1) + 
+                        (($monthlyThreads + $monthlyPosts) * 2)
+                    );
+                    
+                    // Engagement level
+                    if ($user->engagement_score >= 50) {
+                        $user->engagement_level = 'Sangat Aktif';
+                        $user->engagement_color = 'success';
+                    } elseif ($user->engagement_score >= 25) {
+                        $user->engagement_level = 'Aktif';
+                        $user->engagement_color = 'primary';
+                    } elseif ($user->engagement_score >= 10) {
+                        $user->engagement_level = 'Cukup Aktif';
+                        $user->engagement_color = 'warning';
+                    } else {
+                        $user->engagement_level = 'Kurang Aktif';
+                        $user->engagement_color = 'secondary';
+                    }
+                    
+                    return $user;
+                });
+
+            // Popular threads
+            $popularThreads = ForumThread::select('forum_threads.*')
+                ->withCount('posts')
+                ->with(['forum', 'user'])
+                ->orderByDesc('views_count')
+                ->limit(10)
+                ->get();
+
+            // Forum activity by category
+            $forumActivity = Forum::withCount(['threads', 'threads as posts_count' => function($query) {
+                $query->join('forum_posts', 'forum_threads.id', '=', 'forum_posts.thread_id')
+                      ->select(DB::raw('count(forum_posts.id)'));
+            }])->orderByDesc('threads_count')->get();
+
+            // Daily activity for the last 30 days
+            $dailyActivity = $this->getForumDailyActivity(30);
+            
+            // Engagement level distribution
+            $engagementDistribution = [
+                'Sangat Aktif' => $topUsers->where('engagement_level', 'Sangat Aktif')->count(),
+                'Aktif' => $topUsers->where('engagement_level', 'Aktif')->count(),
+                'Cukup Aktif' => $topUsers->where('engagement_level', 'Cukup Aktif')->count(),
+                'Kurang Aktif' => $topUsers->where('engagement_level', 'Kurang Aktif')->count(),
+            ];
+
+            return [
+                'totalForums' => $totalForums,
+                'totalThreads' => $totalThreads,
+                'totalPosts' => $totalPosts,
+                'totalActiveUsers' => $totalActiveUsers,
+                'topUsers' => $topUsers,
+                'popularThreads' => $popularThreads,
+                'forumActivity' => $forumActivity,
+                'dailyActivity' => $dailyActivity,
+                'engagementDistribution' => $engagementDistribution
+            ];
+        } catch (\Exception $e) {
+            // Return default empty data if there's an error
+            return [
+                'totalForums' => 0,
+                'totalThreads' => 0,
+                'totalPosts' => 0,
+                'totalActiveUsers' => 0,
+                'topUsers' => collect(),
+                'popularThreads' => collect(),
+                'forumActivity' => collect(),
+                'dailyActivity' => [],
+                'engagementDistribution' => [
+                    'Sangat Aktif' => 0,
+                    'Aktif' => 0,
+                    'Cukup Aktif' => 0,
+                    'Kurang Aktif' => 0,
+                ]
+            ];
+        }
+    }
+
+    /**
+     * Get forum daily activity
+     */
+    private function getForumDailyActivity($days = 30)
+    {
+        try {
+            $startDate = Carbon::now()->subDays($days);
+            
+            $threads = ForumThread::select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('COUNT(*) as count')
+                )
+                ->where('created_at', '>=', $startDate)
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get()
+                ->keyBy('date');
+
+            $posts = ForumPost::select(
+                    DB::raw('DATE(created_at) as date'),
+                    DB::raw('COUNT(*) as count')
+                )
+                ->where('created_at', '>=', $startDate)
+                ->groupBy('date')
+                ->orderBy('date')
+                ->get()
+                ->keyBy('date');
+
+            $data = [];
+            for ($i = $days - 1; $i >= 0; $i--) {
+                $date = Carbon::now()->subDays($i)->format('Y-m-d');
+                $threadsCount = $threads->get($date)->count ?? 0;
+                $postsCount = $posts->get($date)->count ?? 0;
+                
+                $data[] = [
+                    'date' => $date,
+                    'threads' => $threadsCount,
+                    'posts' => $postsCount,
+                    'total' => $threadsCount + $postsCount
+                ];
+            }
+
+            return $data;
+        } catch (\Exception $e) {
+            // Return empty data array if there's an error
+            $data = [];
+            for ($i = $days - 1; $i >= 0; $i--) {
+                $date = Carbon::now()->subDays($i)->format('Y-m-d');
+                $data[] = [
+                    'date' => $date,
+                    'threads' => 0,
+                    'posts' => 0,
+                    'total' => 0
+                ];
+            }
+            return $data;
+        }
     }
 }

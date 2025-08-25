@@ -16,6 +16,27 @@
 
                     {{ __('You are logged in as a Konsultan!') }}
 
+                    <div class="row mt-4 mb-4">
+                        <div class="col-md-6">
+                            <div class="card bg-info text-white">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">🗨️ Forum Diskusi</h5>
+                                    <p class="card-text">Ikut serta dalam diskusi kesehatan dengan pengguna</p>
+                                    <a href="{{ route('forum.index') }}" class="btn btn-light btn-sm">Masuk Forum</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body text-center">
+                                    <h5 class="card-title">💬 Konsultasi</h5>
+                                    <p class="card-text">Berikan konsultasi kesehatan professional</p>
+                                    <a href="{{ route('konsultan.consultations.index') }}" class="btn btn-light btn-sm">Lihat Konsultasi</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <h3 class="mt-4">Recent Consultations</h3>
                     @if($recent_consultations->isEmpty())
                         <p>No recent consultations.</p>

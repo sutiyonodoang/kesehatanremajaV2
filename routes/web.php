@@ -28,6 +28,9 @@ use App\Http\Controllers\KomentarController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\ResetPasswordController;
+use App\Http\Controllers\ForumController;
+use App\Http\Controllers\ForumThreadController;
+use App\Http\Controllers\ForumPostController;
 
 // Redirect halaman utama ke login
 Route::get('/', function () {
@@ -96,6 +99,29 @@ Route::middleware(['auth', 'roleuser'])->prefix('user')->name('user.')->group(fu
     // Consultation routes
     Route::resource('consultations', UserConsultation::class);
     Route::post('consultations/{consultation}/response', [UserConsultation::class, 'storeResponse'])->name('consultations.response');
+});
+
+// Forum routes - accessible to all authenticated users
+Route::middleware(['auth'])->group(function () {
+    Route::get('forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('forum/search', [ForumController::class, 'search'])->name('forum.search');
+    Route::get('forum/{forum}', [ForumController::class, 'show'])->name('forum.show');
+    
+    // Thread routes with category selection
+    Route::get('forum/threads/create', [ForumThreadController::class, 'createWithCategory'])->name('forum.threads.create');
+    Route::post('forum/threads', [ForumThreadController::class, 'storeWithCategory'])->name('forum.threads.store.category');
+    
+    Route::get('forum/{forum}/threads/create', [ForumThreadController::class, 'create'])->name('forum.threads.create.specific');
+    Route::post('forum/{forum}/threads', [ForumThreadController::class, 'store'])->name('forum.threads.store');
+    Route::get('forum/{forum}/threads/{thread}', [ForumThreadController::class, 'show'])->name('forum.threads.show');
+    Route::get('forum/{forum}/threads/{thread}/edit', [ForumThreadController::class, 'edit'])->name('forum.threads.edit');
+    Route::put('forum/{forum}/threads/{thread}', [ForumThreadController::class, 'update'])->name('forum.threads.update');
+    Route::delete('forum/{forum}/threads/{thread}', [ForumThreadController::class, 'destroy'])->name('forum.threads.destroy');
+    
+    Route::post('forum/{forum}/threads/{thread}/posts', [ForumPostController::class, 'store'])->name('forum.posts.store');
+    Route::get('forum/{forum}/threads/{thread}/posts/{post}/edit', [ForumPostController::class, 'edit'])->name('forum.posts.edit');
+    Route::put('forum/{forum}/threads/{thread}/posts/{post}', [ForumPostController::class, 'update'])->name('forum.posts.update');
+    Route::delete('forum/{forum}/threads/{thread}/posts/{post}', [ForumPostController::class, 'destroy'])->name('forum.posts.destroy');
 });
 
 // Otomatis redirect berdasarkan role setelah login

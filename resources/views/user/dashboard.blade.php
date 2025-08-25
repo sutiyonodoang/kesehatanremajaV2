@@ -88,5 +88,17 @@
         </div>
     </div>
     </div>
+
+    <div class="col-md-3 mb-4">
+        <div class="card text-white shadow rounded-4 border-0" style="background-color: #17a2b8;">
+            <div class="card-body">
+                <div class="text-center">
+                    <div class="feature-icon text-center fs-2">🗨️</div>
+                    <h5 class="card-title fw-bold text-center">Forum Diskusi</h5>
+                    <a href="{{ route('forum.index') }}" class="btn btn-light btn-sm">Diskusi</a>
+                </div>
+            </div>
+        </div>
+    </div>
     
 @endsection
