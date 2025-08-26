@@ -658,7 +658,14 @@ document.addEventListener("DOMContentLoaded", function() {
         // Sort data by progress in descending order (highest first)
         dataToFilter.sort((a, b) => b.progress - a.progress);
 
-        const labels = dataToFilter.map(user => user.name);
+        // Function to convert name to sentence case
+        function toSentenceCase(str) {
+            return str.toLowerCase().split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        const labels = dataToFilter.map(user => toSentenceCase(user.name));
         const progressValues = dataToFilter.map(user => user.progress);
 
         detailChartCard.style.display = 'block';
@@ -716,7 +723,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 scales: {
                     x: {
                         beginAtZero: true,
-                        max: 100
+                        max: 100,
+                        ticks: {
+                            callback: function(value, index, values) {
+                                return value + '%';
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Progres (%)'
+                        }
                     },
                     y: {
                         ticks: {
@@ -725,12 +741,23 @@ document.addEventListener("DOMContentLoaded", function() {
                             font: {
                                 size: 12
                             }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Nama Pengguna'
                         }
                     }
                 },
                 plugins: {
                     legend: { 
                         display: false 
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                return `Progres: ${context.parsed.x}%`;
+                            }
+                        }
                     }
                 },
                 tooltips: {
