@@ -45,6 +45,11 @@
                                     <small class="text-danger">(Sudah terlewat)</small>
                                 @endif
                             </p>
+                            @if($room->deskripsi)
+                            <p class="mb-3 small {{ $isPast ? 'text-muted' : 'text-secondary' }}">
+                                <strong>Deskripsi:</strong> {{ $room->deskripsi }}
+                            </p>
+                            @endif
                             <div class="d-flex gap-2 flex-wrap">
                                 <button
                                     type="button"
