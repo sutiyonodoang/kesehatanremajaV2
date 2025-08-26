@@ -89,7 +89,11 @@ class MateriController extends Controller
             ]
         );
 
-        return Storage::disk('public')->download($materi->file_path);
+        // Get the file path and original filename
+        $filePath = Storage::disk('public')->path($materi->file_path);
+        $fileName = $materi->judul . '.' . pathinfo($materi->file_path, PATHINFO_EXTENSION);
+
+        return response()->download($filePath, $fileName);
     }
 
     public function streamFile(Materi $materi)
@@ -98,6 +102,8 @@ class MateriController extends Controller
             abort(404, 'File not found.');
         }
 
-        return Storage::disk('public')->response($materi->file_path);
+        $filePath = Storage::disk('public')->path($materi->file_path);
+        
+        return response()->file($filePath);
     }
 }
