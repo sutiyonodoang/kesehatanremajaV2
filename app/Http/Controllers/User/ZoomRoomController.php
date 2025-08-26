@@ -13,8 +13,8 @@ class ZoomRoomController extends Controller
     public function index()
     {
         $user = Auth::user();
-        $zoomRooms = ZoomRoom::where('jadwal', '>=', now())
-                             ->orderBy('jadwal')
+        // Tampilkan semua zoom rooms, diurutkan berdasarkan jadwal (yang akan datang dulu, lalu yang sudah lewat)
+        $zoomRooms = ZoomRoom::orderByRaw('CASE WHEN jadwal >= NOW() THEN 0 ELSE 1 END, jadwal ASC')
                              ->paginate(50);
 
         // Get completed Zoom Room IDs for the current user

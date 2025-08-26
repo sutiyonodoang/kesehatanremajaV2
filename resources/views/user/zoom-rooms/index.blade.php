@@ -21,31 +21,55 @@
                     @php
                         $completed = in_array($room->id, $completedZoomRoomIds);
                         $viewed = in_array($room->id, $viewedZoomRoomIds);
+                        $isPast = \Carbon\Carbon::parse($room->jadwal)->isPast();
+                        $isUpcoming = \Carbon\Carbon::parse($room->jadwal)->isFuture();
                     @endphp
                     <div class="col-12 col-md-6">
-                        <div class="border border-dark border-2 rounded shadow-sm bg-light p-3" data-room-id="{{ $room->id }}">
-                            <h5 class="fw-bold text-primary mb-2">
+                        <div class="border border-dark border-2 rounded shadow-sm {{ $isPast ? 'bg-light text-muted' : 'bg-light' }} p-3" data-room-id="{{ $room->id }}">
+                            <h5 class="fw-bold {{ $isPast ? 'text-muted' : 'text-primary' }} mb-2">
                                 {{ $room->judul }}
                                 @if($completed)
                                     <span class="badge bg-success ms-2 status-badge">Selesai</span>
+                                @elseif($isPast)
+                                    <span class="badge bg-secondary ms-2">Terlewat</span>
+                                @elseif($isUpcoming)
+                                    <span class="badge bg-info ms-2">Akan Datang</span>
                                 @endif
                             </h5>
-                            <p class="mb-2"><strong>Jadwal:</strong> {{ \Carbon\Carbon::parse($room->jadwal)->format('d M Y - H:i') }}</p>
+                            <p class="mb-2">
+                                <strong>Jadwal:</strong> 
+                                <span class="{{ $isPast ? 'text-muted' : '' }}">
+                                    {{ \Carbon\Carbon::parse($room->jadwal)->format('d M Y - H:i') }}
+                                </span>
+                                @if($isPast)
+                                    <small class="text-danger">(Sudah terlewat)</small>
+                                @endif
+                            </p>
                             <div class="d-flex gap-2 flex-wrap">
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-info view-detail-btn"
                                     data-id="{{ $room->id }}"
                                     data-bs-toggle="modal"
-                                    data-bs-target="#zoomDetailModal">
-                                    Lihat Detail
+                                    data-bs-target="#zoomDetailModal"
+                                    @if($isPast) disabled title="Zoom sudah terlewat jadwalnya" @endif>
+                                    @if($isPast)
+                                        Detail Tidak Tersedia
+                                    @else
+                                        Lihat Detail
+                                    @endif
                                 </button>
                                 <button
                                     type="button"
                                     class="btn btn-sm btn-success attended-btn"
                                     data-id="{{ $room->id }}"
-                                    @if(!$viewed || $completed) disabled @endif>
-                                    Saya sudah mengikuti Zoom
+                                    @if(!$viewed || $completed || $isPast) disabled @endif
+                                    @if($isPast) title="Zoom sudah terlewat jadwalnya" @endif>
+                                    @if($isPast)
+                                        Sudah Terlewat
+                                    @else
+                                        Saya sudah mengikuti Zoom
+                                    @endif
                                 </button>
                             </div>
                         </div>
@@ -157,14 +181,23 @@ document.addEventListener('DOMContentLoaded', function () {
         zoomDetailModal.addEventListener('show.bs.modal', function (event) {
             const triggerBtn = event.relatedTarget;
             if (!triggerBtn) return;
+            
+            // Prevent modal from opening if button is disabled
+            if (triggerBtn.disabled) {
+                event.preventDefault();
+                return false;
+            }
+            
             const roomId = triggerBtn.getAttribute('data-id');
 
-            // Check if this room is already completed
+            // Check if this room is already completed or past
             const container = document.querySelector(`[data-room-id="${roomId}"]`);
             const isCompleted = container && container.querySelector('.status-badge');
+            const attendedBtn = document.querySelector(`.attended-btn[data-id="${roomId}"]`);
+            const isPast = attendedBtn && attendedBtn.textContent.includes('Sudah Terlewat');
             
-            // Only enable attended button if not completed
-            if (!isCompleted) {
+            // Only enable attended button if not completed and not past
+            if (!isCompleted && !isPast && attendedBtn) {
                 enableAttendedButton(roomId);
             }
 
