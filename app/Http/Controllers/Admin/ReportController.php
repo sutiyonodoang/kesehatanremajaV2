@@ -95,6 +95,65 @@ class ReportController extends Controller
             'in_progress' => $inProgressUsersCount
         ];
 
+        // Statistik Progres Per Kategori
+        $totalUsers = count($users);
+        $categoryStats = [];
+        
+        if ($totalUsers > 0) {
+            // Hitung jumlah user yang menyelesaikan setiap kategori
+            $completedInformasiKesehatanUsers = UserProgress::where('content_type', 'informasi_kesehatan')
+                                                           ->where('is_completed', true)
+                                                           ->distinct('user_id')
+                                                           ->count('user_id');
+            $completedMateriPdfUsers = UserProgress::where('content_type', 'materi_pdf')
+                                                  ->where('is_completed', true)
+                                                  ->distinct('user_id')
+                                                  ->count('user_id');
+            $completedMateriVideoUsers = UserProgress::where('content_type', 'materi_video')
+                                                    ->where('is_completed', true)
+                                                    ->distinct('user_id')
+                                                    ->count('user_id');
+            $completedZoomRoomUsers = UserProgress::where('content_type', 'zoom_room')
+                                                 ->where('is_completed', true)
+                                                 ->distinct('user_id')
+                                                 ->count('user_id');
+
+            $categoryStats = [
+                'informasi_kesehatan' => [
+                    'name' => 'Informasi Kesehatan',
+                    'completed_users' => $completedInformasiKesehatanUsers,
+                    'total_users' => $totalUsers,
+                    'percentage' => round(($completedInformasiKesehatanUsers / $totalUsers) * 100, 1),
+                    'total_content' => $totalInformasiKesehatan,
+                    'color' => '#4e73df'
+                ],
+                'materi_pdf' => [
+                    'name' => 'Materi PDF',
+                    'completed_users' => $completedMateriPdfUsers,
+                    'total_users' => $totalUsers,
+                    'percentage' => round(($completedMateriPdfUsers / $totalUsers) * 100, 1),
+                    'total_content' => $totalMateriPdf,
+                    'color' => '#1cc88a'
+                ],
+                'materi_video' => [
+                    'name' => 'Materi Video',
+                    'completed_users' => $completedMateriVideoUsers,
+                    'total_users' => $totalUsers,
+                    'percentage' => round(($completedMateriVideoUsers / $totalUsers) * 100, 1),
+                    'total_content' => $totalMateriVideo,
+                    'color' => '#36b9cc'
+                ],
+                'zoom_room' => [
+                    'name' => 'Zoom Room',
+                    'completed_users' => $completedZoomRoomUsers,
+                    'total_users' => $totalUsers,
+                    'percentage' => round(($completedZoomRoomUsers / $totalUsers) * 100, 1),
+                    'total_content' => $totalZoomRooms,
+                    'color' => '#f6c23e'
+                ]
+            ];
+        }
+
         // Statistik Konsultasi
         // 1. Konsultasi Berdasarkan Status
         $consultationStatuses = Consultation::select('status', DB::raw('count(*) as total'))
@@ -184,7 +243,7 @@ class ReportController extends Controller
         // Forum Statistics
         $forumStats = $this->getForumStatistics();
 
-        return view('admin.reports.index', compact('pieChartData', 'barChartData',
+        return view('admin.reports.index', compact('pieChartData', 'barChartData', 'categoryStats',
             'consultationStatusLabels', 'consultationStatusCounts',
             'consultationTrendLabels', 'consultationTrendCounts',
             'consultationCategoryLabels', 'consultationCategoryCounts',

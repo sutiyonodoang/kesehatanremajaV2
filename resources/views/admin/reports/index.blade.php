@@ -73,6 +73,58 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Kategori Progress Chart -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card shadow">
+                            <div class="card-header py-3">
+                                <h6 class="m-0 font-weight-bold text-primary">Progres Penyelesaian per Kategori</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    @foreach($categoryStats as $key => $category)
+                                    <div class="col-lg-3 col-md-6 mb-4">
+                                        <div class="card border-left-primary h-100" style="border-left-color: {{ $category['color'] }} !important;">
+                                            <div class="card-body">
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col mr-2">
+                                                        <div class="text-xs font-weight-bold text-uppercase mb-1" style="color: {{ $category['color'] }};">
+                                                            {{ $category['name'] }}
+                                                        </div>
+                                                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                                            {{ $category['completed_users'] }}/{{ $category['total_users'] }}
+                                                        </div>
+                                                        <div class="text-xs mb-2 text-muted">
+                                                            {{ $category['percentage'] }}% pengguna menyelesaikan
+                                                        </div>
+                                                        <div class="progress progress-sm">
+                                                            <div class="progress-bar" role="progressbar" 
+                                                                 style="width: {{ $category['percentage'] }}%; background-color: {{ $category['color'] }};" 
+                                                                 aria-valuenow="{{ $category['percentage'] }}" 
+                                                                 aria-valuemin="0" 
+                                                                 aria-valuemax="100">
+                                                            </div>
+                                                        </div>
+                                                        <div class="text-xs mt-2 text-muted">
+                                                            Total konten: {{ $category['total_content'] }}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                
+                                <!-- Chart untuk kategori -->
+                                <div class="mt-4">
+                                    <canvas id="categoryProgressChart" style="height: 400px;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <!-- Consultation Stats Tab Pane -->
@@ -784,6 +836,76 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('refreshUserProgressButton').addEventListener('click', function(e) {
         e.preventDefault();
         resetUserDetailChart();
+    });
+
+    // --- CATEGORY PROGRESS CHART ---
+    const categoryData = @json($categoryStats);
+    const ctxCategory = document.getElementById('categoryProgressChart').getContext('2d');
+    
+    const categoryLabels = Object.values(categoryData).map(cat => cat.name);
+    const categoryPercentages = Object.values(categoryData).map(cat => cat.percentage);
+    const categoryColors = Object.values(categoryData).map(cat => cat.color);
+    const categoryCompletedUsers = Object.values(categoryData).map(cat => cat.completed_users);
+    const categoryTotalUsers = Object.values(categoryData).map(cat => cat.total_users);
+    
+    const categoryProgressChart = new Chart(ctxCategory, {
+        type: 'bar',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                label: 'Persentase Penyelesaian (%)',
+                data: categoryPercentages,
+                backgroundColor: categoryColors,
+                borderColor: categoryColors.map(color => color.replace(')', ', 0.8)')),
+                borderWidth: 2,
+                borderRadius: 5,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 100,
+                    ticks: {
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    title: {
+                        display: true,
+                        text: 'Persentase Penyelesaian (%)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Kategori Konten'
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const index = context.dataIndex;
+                            const completed = categoryCompletedUsers[index];
+                            const total = categoryTotalUsers[index];
+                            const percentage = context.parsed.y;
+                            return [
+                                `Penyelesaian: ${percentage}%`,
+                                `Pengguna: ${completed}/${total}`
+                            ];
+                        }
+                    }
+                }
+            }
+        }
     });
 
     // --- PIE CHART (Consultation Status) ---
