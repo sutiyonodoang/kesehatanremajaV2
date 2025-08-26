@@ -84,11 +84,22 @@
                 @if($isPdfDownloaded)
                     <span class="badge bg-success ms-2">Selesai Unduh</span>
                 @endif
-                <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#pdfModal">
-                    📖 Baca {{ strtoupper($materi->jenis) }}
-                </button>
-                @if($isPdfScrolled)
-                    <span class="badge bg-success ms-2">Selesai Baca</span>
+                
+                @php
+                    $fileExtension = pathinfo($materi->file_path, PATHINFO_EXTENSION);
+                @endphp
+                
+                @if(strtolower($fileExtension) === 'pdf')
+                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#pdfModal">
+                        📖 Baca {{ strtoupper($materi->jenis) }}
+                    </button>
+                    @if($isPdfScrolled)
+                        <span class="badge bg-success ms-2">Selesai Baca</span>
+                    @endif
+                @else
+                    <span class="text-muted small d-block mt-2">
+                        💡 File {{ strtoupper($fileExtension) }} hanya bisa diunduh, tidak bisa dibaca di browser.
+                    </span>
                 @endif
             </div>
 
@@ -141,7 +152,11 @@
     </div>
 </div>
 
-@if(in_array($materi->jenis, ['pdf', 'doc']))
+@php
+    $fileExtension = pathinfo($materi->file_path, PATHINFO_EXTENSION);
+@endphp
+
+@if(in_array($materi->jenis, ['pdf', 'doc']) && strtolower($fileExtension) === 'pdf')
 <!-- PDF Modal -->
 <div class="modal fade" id="pdfModal" tabindex="-1" aria-labelledby="pdfModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered modal-fullscreen-sm-down"> {{-- Added modal-fullscreen-sm-down --}}
