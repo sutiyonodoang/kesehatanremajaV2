@@ -1,3 +1,15 @@
+V3.1.260825
+- Perbaikan bug halaman user materi:
+  -- Fix 404 error pada materi dengan file_path yang tidak valid
+  -- Perbaikan auto-download file PPTX pada halaman detail materi
+  -- Implementasi deteksi ekstensi file untuk handling yang tepat
+  -- Penambahan notifikasi untuk file non-PDF yang tidak bisa dibaca di browser
+  -- Update database untuk materi ID 15 dan 21
+- Peningkatan UX pada halaman detail materi:
+  -- Tombol "Baca" hanya muncul untuk file PDF
+  -- Modal PDF viewer hanya untuk file PDF
+  -- Informasi jelas untuk user tentang jenis file dan cara akses
+
 V3.0.
 - Penambahan fitur forum
 - penambahan struktur basis data forum
