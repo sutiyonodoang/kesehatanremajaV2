@@ -67,7 +67,7 @@
                 @endphp
 
                 <div class="d-flex align-items-center gap-2">
-                    <a href="{{ asset('pedoman_dan_dokumentasi.html') }}" class="btn btn-outline-info btn-sm" target="_blank">
+                    <a href="/pedoman_dan_dokumentasi.html" class="btn btn-outline-info btn-sm" target="_blank">
                         <i class="bi bi-info-circle"></i> About
                     </a>
 
