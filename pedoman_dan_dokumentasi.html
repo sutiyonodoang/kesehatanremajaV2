@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedoman dan Dokumentasi - Platform Kesehatan Remaja</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+        .bg-primary-custom { background-color: #007bff; }
+        .bg-success-custom { background-color: #28a745; }
+        .bg-info-custom { background-color: #17a2b8; }
+        .bg-warning-custom { background-color: #ffc107; }
+        .bg-danger-custom { background-color: #dc3545; }
+        .text-primary-custom { color: #007bff; }
+        .text-success-custom { color: #28a745; }
+        .text-info-custom { color: #17a2b8; }
+        .text-warning-custom { color: #ffc107; }
+        .text-danger-custom { color: #dc3545; }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e9ecef;
+        }
+        .timeline-item {
+            position: relative;
+            margin-left: 60px;
+            margin-bottom: 30px;
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -42px;
+            top: 15px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #007bff;
+            border: 3px solid white;
+            box-shadow: 0 0 0 3px #007bff;
+        }
+        .code-block {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            margin: 15px 0;
+        }
+        .highlight-box {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 1px solid #ffc107;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .contact-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-4">
+                        <i class="fas fa-book-open me-3"></i>
+                        Pedoman dan Dokumentasi
+                    </h1>
+                    <p class="lead mb-0">
+                        Platform Pembelajaran Kesehatan Remaja Interaktif
+                    </p>
+                    <p class="mt-3">
+                        Panduan lengkap untuk memahami dan menggunakan platform ini secara optimal
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="#home">
+                <i class="fas fa-heartbeat me-2"></i>
+                Kesehatan Remaja
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#tentang">Tentang</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#fitur">Fitur</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#panduan">Panduan</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#teknis">Teknis</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#kontak">Kontak</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container my-5">
+
+        <!-- Tentang Platform -->
+        <section id="tentang" class="mb-5">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card p-4">
+                        <div class="text-center mb-4">
+                            <div class="feature-icon bg-primary-custom text-white mx-auto">
+                                <i class="fas fa-info-circle fa-2x"></i>
+                            </div>
+                            <h2 class="h3 fw-bold">Tentang Platform</h2>
+                        </div>
+                        <p class="lead text-center mb-4">
+                            Platform pembelajaran kesehatan remaja yang dirancang untuk memberikan edukasi kesehatan yang komprehensif, interaktif, dan mudah diakses oleh remaja Indonesia.
+                        </p>
+                        <div class="row text-center">
+                            <div class="col-md-4 mb-3">
+                                <div class="h5 fw-bold text-primary-custom">1000+</div>
+                                <small class="text-muted">Konten Edukasi</small>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="h5 fw-bold text-success-custom">5000+</div>
+                                <small class="text-muted">Pengguna Aktif</small>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="h5 fw-bold text-info-custom">50+</div>
+                                <small class="text-muted">Materi Interaktif</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fitur Utama -->
+        <section id="fitur" class="mb-5">
+            <div class="text-center mb-5">
+                <h2 class="h1 fw-bold">Fitur Utama Platform</h2>
+                <p class="lead text-muted">Temukan berbagai fitur yang membuat pembelajaran kesehatan menjadi menarik dan efektif</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 p-4">
+                        <div class="feature-icon bg-success-custom text-white">
+                            <i class="fas fa-book-open fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Materi Edukasi</h5>
+                        <p class="text-muted mb-3">
+                            Koleksi lengkap materi kesehatan remaja dalam format PDF dan video interaktif dengan konten yang up-to-date dan mudah dipahami.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>PDF Pembelajaran</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Video Edukasi</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Konten Interaktif</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 p-4">
+                        <div class="feature-icon bg-info-custom text-white">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Forum Diskusi</h5>
+                        <p class="text-muted mb-3">
+                            Platform diskusi interaktif untuk berbagi pengalaman, bertanya, dan belajar bersama dengan sesama remaja.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Thread Diskusi</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Komunitas Support</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Moderasi Konten</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 p-4">
+                        <div class="feature-icon bg-warning-custom text-white">
+                            <i class="fas fa-video fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Zoom Meeting</h5>
+                        <p class="text-muted mb-3">
+                            Sesi konsultasi langsung dengan ahli kesehatan melalui platform Zoom untuk mendapatkan jawaban langsung.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Konsultasi Ahli</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Jadwal Fleksibel</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Sesi Privat</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 p-4">
+                        <div class="feature-icon bg-danger-custom text-white">
+                            <i class="fas fa-chart-line fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Tracking Progress</h5>
+                        <p class="text-muted mb-3">
+                            Sistem pelacakan kemajuan belajar yang komprehensif untuk memantau perkembangan pembelajaran Anda.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Dashboard Progress</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Statistik Detail</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Laporan Kemajuan</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 p-4">
+                        <div class="feature-icon bg-primary-custom text-white">
+                            <i class="fas fa-mobile-alt fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Responsive Design</h5>
+                        <p class="text-muted mb-3">
+                            Antarmuka yang responsif dan dapat diakses dari berbagai perangkat, mulai dari desktop hingga smartphone.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Mobile Friendly</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Cross-browser</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Fast Loading</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <div class="card h-100 p-4">
+                        <div class="feature-icon bg-success-custom text-white">
+                            <i class="fas fa-shield-alt fa-2x"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Keamanan Data</h5>
+                        <p class="text-muted mb-3">
+                            Sistem keamanan berlapis untuk melindungi data pribadi dan privasi pengguna dengan standar keamanan tinggi.
+                        </p>
+                        <ul class="list-unstyled small">
+                            <li><i class="fas fa-check text-success me-2"></i>Enkripsi Data</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Autentikasi Aman</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Backup Otomatis</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panduan Penggunaan -->
+        <section id="panduan" class="mb-5">
+            <div class="text-center mb-5">
+                <h2 class="h1 fw-bold">Panduan Penggunaan</h2>
+                <p class="lead text-muted">Langkah-langkah mudah untuk memulai perjalanan pembelajaran Anda</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-10 mx-auto">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">1. Registrasi Akun</h5>
+                            <p>Daftarkan akun baru dengan mengisi data diri yang valid. Pastikan menggunakan email aktif untuk verifikasi.</p>
+                            <div class="highlight-box">
+                                <strong>Tip:</strong> Gunakan password yang kuat dengan kombinasi huruf, angka, dan simbol untuk keamanan maksimal.
+                            </div>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">2. Lengkapi Profil</h5>
+                            <p>Update informasi profil Anda untuk mendapatkan rekomendasi konten yang lebih personal dan relevan.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">3. Jelajahi Dashboard</h5>
+                            <p>Kunjungi dashboard utama untuk melihat progress belajar, quick actions, dan statistik pembelajaran Anda.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">4. Akses Materi Pembelajaran</h5>
+                            <p>Pilih materi yang ingin dipelajari dari berbagai kategori kesehatan remaja yang tersedia.</p>
+                            <ul class="list-unstyled ms-3">
+                                <li><i class="fas fa-dot-circle text-info me-2"></i>Materi PDF untuk pembelajaran mendalam</li>
+                                <li><i class="fas fa-dot-circle text-info me-2"></i>Video edukasi untuk visual learning</li>
+                                <li><i class="fas fa-dot-circle text-info me-2"></i>Konten interaktif untuk engagement</li>
+                            </ul>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">5. Ikuti Progress Belajar</h5>
+                            <p>Pantau kemajuan belajar Anda melalui dashboard yang menampilkan statistik lengkap dan pencapaian.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">6. Bergabung dengan Komunitas</h5>
+                            <p>Berpartisipasi dalam forum diskusi untuk berbagi pengalaman dan belajar dari sesama pengguna.</p>
+                        </div>
+
+                        <div class="timeline-item">
+                            <h5 class="fw-bold text-primary-custom">7. Konsultasi dengan Ahli</h5>
+                            <p>Jadwalkan sesi konsultasi langsung dengan ahli kesehatan melalui fitur Zoom Meeting.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Informasi Teknis -->
+        <section id="teknis" class="mb-5">
+            <div class="text-center mb-5">
+                <h2 class="h1 fw-bold">Informasi Teknis</h2>
+                <p class="lead text-muted">Detail teknis platform untuk developer dan administrator</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 mb-4">
+                    <div class="card p-4 h-100">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-code text-primary me-2"></i>
+                            Teknologi yang Digunakan
+                        </h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Backend:</strong> Laravel 10.x Framework
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Frontend:</strong> Bootstrap 5, JavaScript ES6+
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Database:</strong> MySQL 8.0+
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Server:</strong> Apache/Nginx dengan PHP 8.1+
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Cache:</strong> Redis/File Cache
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 mb-4">
+                    <div class="card p-4 h-100">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-server text-success me-2"></i>
+                            Persyaratan Sistem
+                        </h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item border-0 px-0">
+                                <strong>PHP:</strong> Versi 8.1 atau lebih tinggi
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>MySQL:</strong> Versi 8.0 atau MariaDB 10.5+
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>RAM:</strong> Minimum 2GB (4GB direkomendasikan)
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Storage:</strong> 10GB untuk aplikasi dan data
+                            </li>
+                            <li class="list-group-item border-0 px-0">
+                                <strong>Browser:</strong> Chrome 90+, Firefox 88+, Safari 14+
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="col-lg-12">
+                    <div class="card p-4">
+                        <h5 class="fw-bold mb-3">
+                            <i class="fas fa-terminal text-warning me-2"></i>
+                            Perintah Instalasi
+                        </h5>
+                        <div class="code-block">
+# Clone repository
+git clone https://github.com/sutiyonodoang/kesehatanremajaV2.git
+
+# Install dependencies
+composer install
+npm install
+
+# Setup environment
+cp .env.example .env
+php artisan key:generate
+
+# Setup database
+php artisan migrate
+php artisan db:seed
+
+# Build assets
+npm run build
+php artisan storage:link
+
+# Start development server
+php artisan serve
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Kontak dan Support -->
+        <section id="kontak" class="mb-5">
+            <div class="text-center mb-5">
+                <h2 class="h1 fw-bold">Kontak dan Support</h2>
+                <p class="lead text-muted">Butuh bantuan? Kami siap membantu Anda</p>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="contact-card">
+                        <div class="mb-4">
+                            <i class="fas fa-headset fa-3x text-primary-custom mb-3"></i>
+                            <h4 class="fw-bold">Tim Support Teknis</h4>
+                            <p class="text-muted mb-4">
+                                Tim ahli kami siap membantu Anda dengan pertanyaan teknis, troubleshooting, dan pengembangan platform.
+                            </p>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="text-center">
+                                    <i class="fas fa-envelope fa-2x text-info-custom mb-2"></i>
+                                    <h6 class="fw-bold">Email Support</h6>
+                                    <a href="mailto:support@kesehatanremaja.id" class="text-decoration-none">
+                                        support@kesehatanremaja.id
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="text-center">
+                                    <i class="fas fa-phone fa-2x text-success-custom mb-2"></i>
+                                    <h6 class="fw-bold">Hotline</h6>
+                                    <a href="tel:+62211234567" class="text-decoration-none">
+                                        +62 21 1234 5567
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="text-center">
+                            <h6 class="fw-bold mb-3">Jam Operasional Support</h6>
+                            <p class="mb-1"><strong>Senin - Jumat:</strong> 08:00 - 17:00 WIB</p>
+                            <p class="mb-1"><strong>Sabtu:</strong> 09:00 - 15:00 WIB</p>
+                            <p class="mb-0"><strong>Minggu:</strong> Tutup (Emergency only)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="text-center py-5 border-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <p class="text-muted mb-3">
+                            Platform Pembelajaran Kesehatan Remaja © 2025. Dibuat dengan ❤️ untuk kesehatan generasi muda Indonesia.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3">
+                            <a href="#" class="text-decoration-none text-muted">
+                                <i class="fab fa-facebook fa-lg"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none text-muted">
+                                <i class="fab fa-twitter fa-lg"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none text-muted">
+                                <i class="fab fa-instagram fa-lg"></i>
+                            </a>
+                            <a href="#" class="text-decoration-none text-muted">
+                                <i class="fab fa-youtube fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add active class to navigation on scroll
+        window.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - sectionHeight / 3) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').substring(1) === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

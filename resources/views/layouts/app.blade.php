@@ -67,6 +67,10 @@
                 @endphp
 
                 <div class="d-flex align-items-center gap-2">
+                    <a href="{{ asset('pedoman_dan_dokumentasi.html') }}" class="btn btn-outline-info btn-sm" target="_blank">
+                        <i class="bi bi-info-circle"></i> About
+                    </a>
+
                     <a href="{{ $profileRoute }}" class="btn btn-outline-light btn-sm">
                         <i class="bi bi-person"></i> Profil
                     </a>
